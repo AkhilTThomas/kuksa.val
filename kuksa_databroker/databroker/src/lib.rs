@@ -23,6 +23,9 @@ pub mod vss;
 #[cfg(feature = "viss")]
 pub mod viss;
 
+#[cfg(feature = "s3")]
+pub mod s3;
+
 use std::fmt::Write;
 
 use tracing::info;

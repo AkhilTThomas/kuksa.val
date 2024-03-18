@@ -33,6 +33,9 @@ use clap::{Arg, ArgAction, Command};
 use databroker::viss;
 use databroker::{broker, grpc, permissions, vss};
 
+#[cfg(feature = "s3")]
+use databroker::s3;
+
 async fn shutdown_handler() {
     let mut sigint =
         signal(SignalKind::interrupt()).expect("failed to setup SIGINT signal handler");
@@ -437,6 +440,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
             });
         }
+    }
+
+    #[cfg(feature = "s3")]
+    {
+        // if args.get_flag("enable-s3-upload") {
+        let broker = broker.clone();
+        let authorization = authorization.clone();
+        tokio::spawn(async move {
+            if let Err(err) = s3::server::serve(broker, authorization).await {
+                error!("{err}");
+            }
+        });
+        // }
     }
 
     grpc::server::serve(
