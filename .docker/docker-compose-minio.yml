@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2024-03-15T01-07-19Z
+    command: server --console-address :9001 /data
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      - minionetwork
+    volumes:
+      - 'minio_data:/data'
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_DEFAULT_BUCKETS=kuksa
+      - MINIO_ACCESS_KEY_FILE=/run/secrets/accessfile.txt
+      - MINIO_SECRET_KEY_FILE=/run/secrets/secretfile.txt
+    secrets:
+      - accessfile
+      - secretfile
+
+networks:
+  minionetwork:
+    driver: bridge
+
+volumes:
+  minio_data:
+    driver: local
+
+secrets:
+  accessfile:
+    file: accessfile.txt
+  secretfile:
+    file: secretfile.txt

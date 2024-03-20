@@ -12,6 +12,7 @@
 ********************************************************************************/
 
 use std::convert::TryFrom;
+use serde::Serialize;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum DataType {
@@ -55,24 +56,41 @@ pub enum ChangeType {
     Continuous,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub enum DataValue {
+    #[serde(rename = "NotAvailable")]
     NotAvailable,
+    #[serde(rename = "bool")]
     Bool(bool),
+    #[serde(rename = "String")]
     String(String),
+    #[serde(rename = "i32")]
     Int32(i32),
+    #[serde(rename = "i64")]
     Int64(i64),
+    #[serde(rename = "u32")]
     Uint32(u32),
+    #[serde(rename = "u64")]
     Uint64(u64),
+    #[serde(rename = "f32")]
     Float(f32),
+    #[serde(rename = "f64")]
     Double(f64),
+    #[serde(rename = "bool[]")]
     BoolArray(Vec<bool>),
+    #[serde(rename = "String[]")]
     StringArray(Vec<String>),
+    #[serde(rename = "i32[]")]
     Int32Array(Vec<i32>),
+    #[serde(rename = "i64[]")]
     Int64Array(Vec<i64>),
+    #[serde(rename = "u32[]")]
     Uint32Array(Vec<u32>),
+    #[serde(rename = "u64[]")]
     Uint64Array(Vec<u64>),
+    #[serde(rename = "f32[]")]
     FloatArray(Vec<f32>),
+    #[serde(rename = "f64[]")]
     DoubleArray(Vec<f64>),
 }
 
